@@ -14,8 +14,13 @@ class WindowCapture:
         self.w = window_rect[2] - window_rect[0]
         self.h = window_rect[3] - window_rect[1]
         
-        # Remove Border
-        
+        # Remove Border and shift cropping
+        border_pixels = 8
+        titlebar_pixels = 30
+        self.w -= border_pixels * 2
+        self.h -= titlebar_pixels + titlebar_pixels
+        self.cropped_x = border_pixels
+        self.cropped_y = titlebar_pixels
         
         
     def get_screenshot(self):
@@ -26,7 +31,7 @@ class WindowCapture:
         bmp = win32ui.CreateBitmap()
         bmp.CreateCompatibleBitmap(dcObj, self.w, self.h)
         cDC.SelectObject(bmp)
-        cDC.BitBlt((0,0),(self.w, self.h) , dcObj, (0,0), win32con.SRCCOPY)
+        cDC.BitBlt((0,0),(self.w, self.h) , dcObj, (self.cropped_x, self.cropped_y), win32con.SRCCOPY)
     
         # Edit Bitmap
         signedIntsArray = bmp.GetBitmapBits(True)
