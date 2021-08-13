@@ -25,9 +25,10 @@ while True:
     # Image match calculation
     left_atk_res = cv2.matchTemplate(cap[335:351, 393:400, :], left_atk, cv2.TM_CCOEFF_NORMED)
     right_atk_res = cv2.matchTemplate(cap[335:351, 880:887, :], right_atk, cv2.TM_CCOEFF_NORMED)
-    left_brawl_res = cv2.matchTemplate(cap[272:276, 371:375, :], left_brawl, cv2.TM_CCOEFF_NORMED)
-    right_brawl_res = cv2.matchTemplate(cap[272:276, 898:902, :], right_brawl, cv2.TM_CCOEFF_NORMED)
+    left_brawl_res = cv2.matchTemplate(cap[281:396, 317:359, :], left_brawl, cv2.TM_CCOEFF_NORMED)
+    right_brawl_res = cv2.matchTemplate(cap[222:278, 916:958, :], right_brawl, cv2.TM_CCOEFF_NORMED)
     
+    print(cv2.minMaxLoc(left_brawl_res)[1], cv2.minMaxLoc(right_brawl_res)[1])
     if cv2.minMaxLoc(left_atk_res)[1] >= THRESHOLD_ATK:
         print("Left Attack")
         keypress.hold_key("left", 0.01)
@@ -35,16 +36,16 @@ while True:
         print("Right Attack")
         keypress.hold_key("right", 0.01)
     if cv2.minMaxLoc(left_brawl_res)[1] >= THRESHOLD_BRAWL:
-        print("Left Attack")
+        print("Left Brawl")
         keypress.hold_key("left", 0.01)
     if cv2.minMaxLoc(right_brawl_res)[1] >= THRESHOLD_BRAWL:
-        print("Right Attack")
+        print("Right Brawl")
         keypress.hold_key("right", 0.01)
     
-    cv2.imshow("Left Atk", cap[335:351, 393:400, :])
+    #cv2.imshow("Left Atk", cap[335:351, 393:400, :])
     #cv2.imshow("Right Atk", cap[335:351, 880:887, :])
-    #cv2.imshow("Left Brawl", cap[272:276, 371:375, :])
-    #cv2.imshow("Right Brawl", cap[272:276, 898:902, :])
+    #cv2.imshow("Left Brawl", cap[281:396, 317:359, :])
+    cv2.imshow("Right Brawl", cap[222:278, 916:958, :])
     
     # Escape keys
     if cv2.waitKey(1) == ord("q"):
