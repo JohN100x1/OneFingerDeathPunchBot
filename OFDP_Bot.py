@@ -3,8 +3,8 @@ import keypress
 import numpy as np
 from windowcapture import get_screenshot
 
-### ISSUES: targetting should choose closer enemy
-### TODO: brawler detection
+### TODO: brawling quicktime event is too slow
+### TODO: chance of missing due to simulateous left/right attack causing the enemy to be out of range (need re-detection)
 
 WINDOW_NAME = "One Finger Death Punch"
 THRESHOLD_ATK = 0.95
@@ -25,8 +25,8 @@ while True:
     # Image match calculation
     left_atk_res = cv2.matchTemplate(cap[335:351, 393:400, :], left_atk, cv2.TM_CCOEFF_NORMED)
     right_atk_res = cv2.matchTemplate(cap[335:351, 880:887, :], right_atk, cv2.TM_CCOEFF_NORMED)
-    left_brawl_res = cv2.matchTemplate(cap[281:396, 317:359, :], left_brawl, cv2.TM_CCOEFF_NORMED)
-    right_brawl_res = cv2.matchTemplate(cap[222:278, 916:958, :], right_brawl, cv2.TM_CCOEFF_NORMED)
+    left_brawl_res = cv2.matchTemplate(cap[281:496, 317:359, :], left_brawl, cv2.TM_CCOEFF_NORMED)
+    right_brawl_res = cv2.matchTemplate(cap[222:437, 916:958, :], right_brawl, cv2.TM_CCOEFF_NORMED)
     
     print(cv2.minMaxLoc(left_brawl_res)[1], cv2.minMaxLoc(right_brawl_res)[1])
     if cv2.minMaxLoc(left_atk_res)[1] >= THRESHOLD_ATK:
@@ -44,8 +44,8 @@ while True:
     
     #cv2.imshow("Left Atk", cap[335:351, 393:400, :])
     #cv2.imshow("Right Atk", cap[335:351, 880:887, :])
-    #cv2.imshow("Left Brawl", cap[281:396, 317:359, :])
-    cv2.imshow("Right Brawl", cap[222:278, 916:958, :])
+    cv2.imshow("Left Brawl", cap[281:496, 317:359, :])
+    cv2.imshow("Right Brawl", cap[222:437, 916:958, :])
     
     # Escape keys
     if cv2.waitKey(1) == ord("q"):
