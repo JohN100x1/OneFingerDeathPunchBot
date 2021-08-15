@@ -1,17 +1,16 @@
 import cv2
 import keypress
 import numpy as np
-from time import time
+from time import time, sleep
 from windowcapture import get_screenshot
 
 ### TODO: brawling quicktime event is too slow
 ### TODO: chance of missing due to simulateous left/right attack causing the enemy to be out of range (need re-detection)
-### TODO: lightsaber round detection missing
 
 WINDOW_NAME = "One Finger Death Punch"
 LEFT = 0x25
 RIGHT = 0x27
-THRESHOLD_ATK = 0.95
+THRESHOLD_ATK = 0.99
 THRESHOLD_BRAWL = 0.7
 
 left_atk = cv2.imread("images//left_attack.png", cv2.IMREAD_UNCHANGED)
@@ -28,13 +27,13 @@ while True:
     cap = cv2.cvtColor(cap, cv2.COLOR_RGB2BGR)
     
     # Left attack detect
-    left_atk_res = cv2.matchTemplate(cap[335:351, 393:400, :], left_atk, cv2.TM_CCOEFF_NORMED)
+    left_atk_res = cv2.matchTemplate(cap[351:353, 550:552, :], left_atk, cv2.TM_CCOEFF_NORMED)
     if cv2.minMaxLoc(left_atk_res)[1] >= THRESHOLD_ATK:
         print("Left Attack")
         keypress.hold_key(LEFT, 0.03)
     
     # Right attack detect
-    right_atk_res = cv2.matchTemplate(cap[335:351, 880:887, :], right_atk, cv2.TM_CCOEFF_NORMED)
+    right_atk_res = cv2.matchTemplate(cap[351:353, 728:730, :], right_atk, cv2.TM_CCOEFF_NORMED)
     if cv2.minMaxLoc(right_atk_res)[1] >= THRESHOLD_ATK:
         print("Right Attack")
         keypress.hold_key(RIGHT, 0.03)
@@ -51,15 +50,16 @@ while True:
         print("Right Brawl")
         keypress.hold_key(RIGHT, 0.03)
     
-    #cv2.imshow("Left Atk", cap[335:351, 393:400, :])
-    #cv2.imshow("Right Atk", cap[335:351, 880:887, :])
+    #cv2.imshow("Left Atk", cap[351:353, 550:552, :])
+    #cv2.imshow("Right Atk", cap[351:353, 728:730, :])
     #cv2.imshow("Left Brawl", cap[281:496, 317:359, :])
     cv2.imshow("Right Brawl", cap[222:437, 916:958, :])
     
     # Escape keys
-    if cv2.waitKey(200) == ord("q"):
+    if cv2.waitKey(1) == ord("q"):
         break
     
+    sleep(0.1)
     #print("FPS: {}".format(1/(time() - t0)))
 
 # Stop Bot
