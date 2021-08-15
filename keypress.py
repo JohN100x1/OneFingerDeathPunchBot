@@ -1,7 +1,7 @@
-import pydirectinput
-from time import time
+import win32api
+from time import sleep
 
 def hold_key(key, hold_time):
-    t0 = time()
-    while time() - t0 < hold_time:
-        pydirectinput.press(key)
+    win32api.keybd_event(key, 0, 0x00)
+    sleep(hold_time)
+    win32api.keybd_event(key, 0, 0x02)
